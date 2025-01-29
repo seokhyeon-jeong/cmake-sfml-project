@@ -1,10 +1,19 @@
 #include <SFML/Graphics.hpp>
-
+#include "System/GameEngine.hpp"
 int main()
 {
-    auto window = sf::RenderWindow(sf::VideoMode({1920u, 1080u}), "CMake SFML Project");
-    window.setFramerateLimit(144);
+    constexpr int wWidth = 1280;
+    constexpr int wHeight = 720;
+    auto window = sf::RenderWindow(sf::VideoMode({wWidth, wHeight}), "CMake SFML Project");
+    window.setFramerateLimit(60);
 
+    EntityManager entityManager;
+    auto e = entityManager.addEntity("Bullet");
+    e->cShape = std::make_shared<CShape>();
+    auto& circle = e->cShape->shape;
+    circle.setRadius(40.f);
+    circle.setPosition({ 100.f, 100.f });
+    circle.setFillColor(sf::Color::Red);
     while (window.isOpen())
     {
         while (const std::optional event = window.pollEvent())
@@ -16,6 +25,7 @@ int main()
         }
 
         window.clear();
+        window.draw(circle);
         window.display();
     }
 }
