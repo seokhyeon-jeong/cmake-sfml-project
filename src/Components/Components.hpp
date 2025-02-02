@@ -2,20 +2,26 @@
 #include <SFML/Graphics.hpp>
 class CTransform {
 public:
-	CTransform(const sf::Vector2f& p, const sf::Vector2f& v, const sf::Vector2f& s = { 1.f,1.f }, double a=0.f)
-		:pos{ p }, velocity{ v } {
+	CTransform(const sf::Vector2f& p, const sf::Vector2f& v, float a=0.01f)
+		:pos{ p }, velocity{ v }, angle{ sf::degrees(a) } {
 	}
 public:
 	sf::Vector2f pos;
 	sf::Vector2f velocity;
-	sf::Vector2f scale;
-	double angle;
+	sf::Angle angle;
 };
 
 class CShape {
 public:
+	CShape(float radius, size_t points, const sf::Color& fill, const sf::Color& outline, float thickness)
+		:circle{ radius, points } {
+		circle.setFillColor(fill);
+		circle.setOutlineColor(outline);
+		circle.setOutlineThickness(thickness);
+		circle.setOrigin({ radius, radius });
+	}
 public:
-	sf::CircleShape shape;
+	sf::CircleShape circle;
 };
 
 class CCollision {
@@ -34,18 +40,20 @@ public:
 
 class CLifespan {
 public:
-	CLifespan(float lifespan)
-		:lifespan{ lifespan } {
+	CLifespan(int total)
+		:remaining{ total }, total{ total } {
 	}
 public:
-	float lifespan;
+	int remaining;
+	int total;
 };
 
 class CInput {
 public:
+	CInput()
+		:up{ false }, down{ false }, left{ false }, right{ false }, shoot{ false } {
+	}
 public:
-	int left;
-	int right;
-	int up;
-	int down;
+	bool up, down, left, right;
+	bool shoot;
 };

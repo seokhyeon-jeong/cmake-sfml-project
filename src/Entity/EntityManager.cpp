@@ -24,6 +24,7 @@ void EntityManager::update()
 		m_entities.push_back(e);
 		m_entityMap[e->getTag()].push_back(e);
 	}
+	m_toAdd.clear();
 
 	m_entities.erase(std::remove_if(m_entities.begin(), m_entities.end(), [](std::shared_ptr<Entity> e)->bool {
 		return !e->isAlive();
